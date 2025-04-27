@@ -1,0 +1,13 @@
+Python 3.x
+
+Libraries:
+
+1.scikit-learn (for machine learning models)
+
+2.pandas (for data manipulation)
+
+3.numpy (for numerical operations)
+
+4.flask (for web interface)
+
+5.HTML/CSS (for frontend development)
