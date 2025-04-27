@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Genre Prediction</title>
+    <style>
+        /* Add some simple styling for the page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Genre Prediction</h1>
+        <textarea id="description" placeholder="Enter movie description here..."></textarea>
+        <button id="predictBtn">Predict Genre</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        // Add an event listener for the predict button
+        document.getElementById('predictBtn').addEventListener('click', function() {
+            var description = document.getElementById('description').value;
+            if (!description) {
+                alert('Please enter a description!');
+                return;
+            }
+
+            // Send the description to the Flask backend using fetch API
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ description: description }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.predicted_genre) {
+                    document.getElementById('result').innerHTML = 'Predicted Genre: ' + data.predicted_genre;
+                } else {
+                    document.getElementById('result').innerHTML = 'Error: ' + data.error;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = 'An error occurred while processing your request.';
+            });
+        });
+    </script>
+</body>
+</html>
